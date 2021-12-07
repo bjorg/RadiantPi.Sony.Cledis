@@ -64,9 +64,9 @@ namespace RadiantPi.Sony.Cledis {
 
         //--- Properties ---
         public float ControllerTemperature { get; set; }
-        public SonyCledisModuleTemperature[,]? Modules { get; set; }
-        public int RowCount => Modules?.GetLength(1) ?? 0;
-        public int ColumnCount => Modules?.GetLength(0) ?? 0;
+        public SonyCledisModuleTemperature[,] Modules { get; set; } = new SonyCledisModuleTemperature[0, 0];
+        public int RowCount => Modules.GetLength(1);
+        public int ColumnCount => Modules.GetLength(0);
     }
 
     public class SonyCledisModuleTemperature {
