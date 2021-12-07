@@ -1,5 +1,5 @@
 /*
- * RadiantPi.Trinnov.Altitude - Communication client for Trinnov Altitude
+ * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
  * Copyright (C) 2020-2021 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -27,6 +27,14 @@ using RadiantPi.Sony.Cledis.Exceptions;
 
 namespace RadiantPi.Sony.Cledis {
     public abstract class ASonyCledisClient : ISonyCledis {
+
+        //--- Class Fields ---
+        protected static readonly JsonSerializerOptions g_jsonSerializerOptions = new() {
+            WriteIndented = true,
+            Converters = {
+                new JsonStringEnumConverter()
+            }
+        };
 
         //--- Constructors ---
         protected ASonyCledisClient(ILogger? logger) => Logger = logger;
@@ -68,15 +76,6 @@ namespace RadiantPi.Sony.Cledis {
             case "err_internal2":
                 throw new SonyCledisInternal2Exception();
             default:
-                if(Logger?.IsEnabled(LogLevel.Debug) ?? false) {
-                    var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions {
-                        WriteIndented = true,
-                        Converters = {
-                            new JsonStringEnumConverter()
-                        }
-                    });
-                    Logger?.LogDebug($"response: {serializedResponse}");
-                }
                 return JsonSerializer.Deserialize<T>(response)
                     ?? throw new SonyCledisCommandNullResponseException();
             }
@@ -84,11 +83,8 @@ namespace RadiantPi.Sony.Cledis {
 
         protected SonyCledisTemperatures ConvertTemperatureFromJson(string json) {
             SonyCledisTemperatures result = new();
-            var data = ConvertResponse<List<Dictionary<string, float>>>(json)
-
-                // TODO: better exception
-                ?? throw new Exception();
-            Dictionary<(int Column,int Row), SonyCledisModuleTemperature> modules = new();
+            var data = ConvertResponse<List<Dictionary<string, float>>>(json);
+            Dictionary<(int Column, int Row), SonyCledisModuleTemperature> modules = new();
 
             // loop over all entries in response
             foreach(var entry in data) {
@@ -174,10 +170,10 @@ namespace RadiantPi.Sony.Cledis {
                         // set module cell temperature
                         module.CellTemperatures[11] = value;
                     } else {
-                        Logger?.LogWarning($"unrecognized module entry: '{key}' = {value}");
+                        Logger?.LogWarning($"Invalid module entry: '{key}' = {value}");
                     }
                 } else {
-                    Logger?.LogWarning($"unrecognized entry: '{key}' = {value}");
+                    Logger?.LogWarning($"Invalid entry: '{key}' = {value}");
                 }
             }
 

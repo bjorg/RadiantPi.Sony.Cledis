@@ -1,5 +1,5 @@
 /*
- * RadiantPi.Trinnov.Altitude - Communication client for Trinnov Altitude
+ * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
  * Copyright (C) 2020-2021 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -17,8 +17,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -58,17 +59,17 @@ namespace RadiantPi.Sony.Cledis {
         }
 
         //--- Methods ---
-        public override async Task<string> GetModelNameAsync()
-            => ConvertResponse<string>(await SendAsync("modelname ?"));
+        public override Task<string> GetModelNameAsync()
+            => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("modelname ?")));
 
-        public override async Task<long> GetSerialNumberAsync()
-            => ConvertResponse<long>(await SendAsync("serialnum ?"));
+        public override Task<long> GetSerialNumberAsync()
+            => LogRequestResponse(async () => ConvertResponse<long>(await SendAsync("serialnum ?")));
 
-        public override async Task<SonyCledisTemperatures> GetTemperatureAsync()
-            => ConvertTemperatureFromJson(await SendAsync("temperature ?"));
+        public override Task<SonyCledisTemperatures> GetTemperatureAsync()
+            => LogRequestResponse(async () => ConvertTemperatureFromJson(await SendAsync("temperature ?")));
 
-        public override async Task<SonyCledisPowerStatus> GetPowerStatusAsync()
-            => ConvertResponse<string>(await SendAsync("power_status ?")) switch {
+        public override Task<SonyCledisPowerStatus> GetPowerStatusAsync()
+            => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("power_status ?")) switch {
                 "standby" => SonyCledisPowerStatus.StandBy,
                 "on" => SonyCledisPowerStatus.On,
                 "updating" => SonyCledisPowerStatus.Updating,
@@ -76,37 +77,37 @@ namespace RadiantPi.Sony.Cledis {
                 "shutting_down" => SonyCledisPowerStatus.ShuttingDown,
                 "initializing" => SonyCledisPowerStatus.Initializing,
                 var value => throw new SonyCledisUnrecognizedResponseException(value)
-            };
+            });
 
         public override Task SetPowerAsync(SonyCledisPower power)
             => power switch {
-                SonyCledisPower.On => SendCommandAsync("power \"on\""),
-                SonyCledisPower.Off => SendCommandAsync("power \"off\""),
+                SonyCledisPower.On => LogRequest(() => SendCommandAsync("power \"on\""), power),
+                SonyCledisPower.Off => LogRequest(() => SendCommandAsync("power \"off\""), power),
                 _ => throw new ArgumentException("invalid value", nameof(power))
             };
 
-        public override async Task<SonyCledisInput> GetInputAsync()
-            => ConvertResponse<string>(await SendAsync("input ?")) switch {
+        public override Task<SonyCledisInput> GetInputAsync()
+            => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("input ?")) switch {
                 "dp1" => SonyCledisInput.DisplayPort1,
                 "dp2" => SonyCledisInput.DisplayPort2,
                 "dp1_2" => SonyCledisInput.DisplayPortBoth,
                 "hdmi1" => SonyCledisInput.Hdmi1,
                 "hdmi2" => SonyCledisInput.Hdmi2,
                 var value => throw new SonyCledisUnrecognizedResponseException(value)
-            };
+            });
 
         public override Task SetInputAsync(SonyCledisInput input)
             => input switch {
-                SonyCledisInput.DisplayPort1 => SendCommandAsync("input \"dp1\""),
-                SonyCledisInput.DisplayPort2 => SendCommandAsync("input \"dp2\""),
-                SonyCledisInput.DisplayPortBoth => SendCommandAsync("input \"dp1_2\""),
-                SonyCledisInput.Hdmi1 => SendCommandAsync("input \"hdmi1\""),
-                SonyCledisInput.Hdmi2 => SendCommandAsync("input \"hdmi2\""),
+                SonyCledisInput.DisplayPort1 => LogRequest(() => SendCommandAsync("input \"dp1\""), input),
+                SonyCledisInput.DisplayPort2 => LogRequest(() => SendCommandAsync("input \"dp2\""), input),
+                SonyCledisInput.DisplayPortBoth => LogRequest(() => SendCommandAsync("input \"dp1_2\""), input),
+                SonyCledisInput.Hdmi1 => LogRequest(() => SendCommandAsync("input \"hdmi1\""), input),
+                SonyCledisInput.Hdmi2 => LogRequest(() => SendCommandAsync("input \"hdmi2\""), input),
                 _ => throw new ArgumentException("invalid value", nameof(input))
             };
 
-        public override async Task<SonyCledisPictureMode> GetPictureModeAsync()
-            => ConvertResponse<string>(await SendAsync("picture_mode ?")) switch {
+        public override Task<SonyCledisPictureMode> GetPictureModeAsync()
+            => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("picture_mode ?")) switch {
                 "mode1" => SonyCledisPictureMode.Mode1,
                 "mode2" => SonyCledisPictureMode.Mode2,
                 "mode3" => SonyCledisPictureMode.Mode3,
@@ -118,20 +119,20 @@ namespace RadiantPi.Sony.Cledis {
                 "mode9" => SonyCledisPictureMode.Mode9,
                 "mode10" => SonyCledisPictureMode.Mode10,
                 var value => throw new SonyCledisUnrecognizedResponseException(value)
-            };
+            });
 
         public override Task SetPictureModeAsync(SonyCledisPictureMode mode)
             => mode switch {
-                SonyCledisPictureMode.Mode1 => SendCommandAsync("picture_mode \"mode1\""),
-                SonyCledisPictureMode.Mode2 => SendCommandAsync("picture_mode \"mode2\""),
-                SonyCledisPictureMode.Mode3 => SendCommandAsync("picture_mode \"mode3\""),
-                SonyCledisPictureMode.Mode4 => SendCommandAsync("picture_mode \"mode4\""),
-                SonyCledisPictureMode.Mode5 => SendCommandAsync("picture_mode \"mode5\""),
-                SonyCledisPictureMode.Mode6 => SendCommandAsync("picture_mode \"mode6\""),
-                SonyCledisPictureMode.Mode7 => SendCommandAsync("picture_mode \"mode7\""),
-                SonyCledisPictureMode.Mode8 => SendCommandAsync("picture_mode \"mode8\""),
-                SonyCledisPictureMode.Mode9 => SendCommandAsync("picture_mode \"mode9\""),
-                SonyCledisPictureMode.Mode10 => SendCommandAsync("picture_mode \"mode10\""),
+                SonyCledisPictureMode.Mode1 => LogRequest(() => SendCommandAsync("picture_mode \"mode1\""), mode),
+                SonyCledisPictureMode.Mode2 => LogRequest(() => SendCommandAsync("picture_mode \"mode2\""), mode),
+                SonyCledisPictureMode.Mode3 => LogRequest(() => SendCommandAsync("picture_mode \"mode3\""), mode),
+                SonyCledisPictureMode.Mode4 => LogRequest(() => SendCommandAsync("picture_mode \"mode4\""), mode),
+                SonyCledisPictureMode.Mode5 => LogRequest(() => SendCommandAsync("picture_mode \"mode5\""), mode),
+                SonyCledisPictureMode.Mode6 => LogRequest(() => SendCommandAsync("picture_mode \"mode6\""), mode),
+                SonyCledisPictureMode.Mode7 => LogRequest(() => SendCommandAsync("picture_mode \"mode7\""), mode),
+                SonyCledisPictureMode.Mode8 => LogRequest(() => SendCommandAsync("picture_mode \"mode8\""), mode),
+                SonyCledisPictureMode.Mode9 => LogRequest(() => SendCommandAsync("picture_mode \"mode9\""), mode),
+                SonyCledisPictureMode.Mode10 => LogRequest(() => SendCommandAsync("picture_mode \"mode10\""), mode),
                 _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
@@ -141,7 +142,6 @@ namespace RadiantPi.Sony.Cledis {
         }
 
         private void ValidateResponse(string response) {
-            Logger?.LogDebug($"Response: {response}");
 
             // check if response is an error code
             switch(response) {
@@ -167,19 +167,18 @@ namespace RadiantPi.Sony.Cledis {
         }
 
         private async Task SendCommandAsync(string message)
-            => ValidateResponse(await SendAsync(message + "\r"));
+            => ValidateResponse(await SendAsync(message + "\r").ConfigureAwait(false));
 
         private async Task<string> SendAsync(string message) {
-            await _mutex.WaitAsync();
+            await _mutex.WaitAsync().ConfigureAwait(false);
             try {
                 TaskCompletionSource<string> responseSource = new();
 
                 // send message and await response
                 try {
                     _telnet.MessageReceived += ResponseHandler;
-                    await _telnet.SendAsync(message);
-                    var response = await responseSource.Task;
-                    return response;
+                    await _telnet.SendAsync(message).ConfigureAwait(false);
+                    return await responseSource.Task.ConfigureAwait(false);
                 } finally {
 
                     // remove response handler no matter what
@@ -195,13 +194,32 @@ namespace RadiantPi.Sony.Cledis {
         }
 
         private async Task ValidateConnectionAsync(ITelnet client, TextReader reader, TextWriter writer) {
-            var handshake = await reader.ReadLineAsync();
+            var handshake = await reader.ReadLineAsync().ConfigureAwait(false);
 
             // the controller sends 'NOKEY' when there is no need for authentication
             if(handshake != "NOKEY") {
                 throw new NotSupportedException("Sony C-LED requires authentication");
             }
-            Logger?.LogDebug("unsecured Sony C-LED connection established");
+            Logger?.LogInformation("Sony C-LED connection established");
+        }
+
+        private void LogDebugJson(string message, object? response) {
+            if(Logger?.IsEnabled(LogLevel.Debug) ?? false) {
+                var serializedResponse = JsonSerializer.Serialize(response, g_jsonSerializerOptions);
+                Logger?.LogDebug($"{message}: {serializedResponse}");
+            }
+        }
+
+        private async Task<T> LogRequestResponse<T>(Func<Task<T>> callback, [CallerMemberName] string methodName = "") {
+            Logger?.LogDebug($"{methodName} request");
+            var response = await callback().ConfigureAwait(false);
+            LogDebugJson($"{methodName} response", response);
+            return response;
+        }
+
+        private Task LogRequest<T>(Func<Task> callback, T parameter, [CallerMemberName] string methodName = "") {
+            Logger?.LogDebug($"{methodName} request: {parameter}");
+            return callback();
         }
     }
 }

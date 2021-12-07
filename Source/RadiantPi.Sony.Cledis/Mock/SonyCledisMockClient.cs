@@ -1,5 +1,5 @@
 /*
- * RadiantPi.Trinnov.Altitude - Communication client for Trinnov Altitude
+ * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
  * Copyright (C) 2020-2021 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RadiantPi.Sony.Internal;
