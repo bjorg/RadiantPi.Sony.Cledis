@@ -24,5 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\*" />
+    <None Include="..\..\ReadMe.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
