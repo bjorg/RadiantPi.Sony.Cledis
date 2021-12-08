@@ -9,7 +9,7 @@
     <PackageId>RadiantPi.Sony.Cledis</PackageId>
     <Version>1.0</Version>
     <Title>RadiantPi Sony Cledis Client Library</Title>
-    <Description>Communication client for Sony Crystal-LED</Description>
+    <Description>Communication client for Sony C-LED (Cledis)</Description>
     <Copyright>Copyright (C) 2020-2021</Copyright>
     <Authors>Bjorg</Authors>
 

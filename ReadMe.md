@@ -1,6 +1,6 @@
 # RadiantPi.Sony.Cledis
 
-`SonyCledisClient` enables control of a Sony Crystal-LED (C-LED) controller over Telnet. The library is platform agnostic and works on Windows or Linux, including on a Raspberry Pi.
+`SonyCledisClient` enables control of a Sony C-LED (Cledis)) controller over Telnet. The library is platform agnostic and works on Windows or Linux, including on a Raspberry Pi.
 
 Run the `dotnet` command from your project folder to add the `RadiantPi.Sony.Cledis` assembly:
 ```
