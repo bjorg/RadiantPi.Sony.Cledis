@@ -33,6 +33,10 @@ namespace RadiantPi.Sony.Cledis.Mock {
         private SonyCledisPowerStatus _power = SonyCledisPowerStatus.StandBy;
         private SonyCledisInput _input = SonyCledisInput.Hdmi1;
         private SonyCledisPictureMode _mode = SonyCledisPictureMode.Mode1;
+        private SonyCledisDualDisplayPort3D4K _3d4kStatus = SonyCledisDualDisplayPort3D4K.On;
+        private SonyCledisFanMode _fanMode = SonyCledisFanMode.Mid;
+        private SonyCledis2D3D _2d3dSelection = SonyCledis2D3D.Select2D;
+        private SonyCledis3DFormat _3dFormat = SonyCledis3DFormat.FrameSequential;
 
         //--- Constructors ---
         public SonyCledisMockClient(ILogger? logger = null) : base(logger) { }
@@ -76,6 +80,26 @@ namespace RadiantPi.Sony.Cledis.Mock {
             default:
                 throw new ArgumentOutOfRangeException(nameof(power));
             }
+            return Task.CompletedTask;
+        }
+
+        public override Task Set2D3DSelectionAsync(SonyCledis2D3D selection) {
+            _2d3dSelection = selection;
+            return Task.CompletedTask;
+        }
+
+        public override Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status) {
+            _3d4kStatus = status;
+            return Task.CompletedTask;
+        }
+
+        public override Task Set3DFormatAsync(SonyCledis3DFormat format) {
+            _3dFormat = format;
+            return Task.CompletedTask;
+        }
+
+        public override Task SetFanModeAsync(SonyCledisFanMode mode) {
+            _fanMode = mode;
             return Task.CompletedTask;
         }
 

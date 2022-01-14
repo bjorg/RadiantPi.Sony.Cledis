@@ -60,6 +60,31 @@ namespace RadiantPi.Sony.Cledis {
         Mode10
     }
 
+    public enum SonyCledisDualDisplayPort3D4K {
+        Undefined,
+        On,
+        Off
+    }
+
+    public enum SonyCledis2D3D {
+        Undefined,
+        Select2D,
+        Select3D
+    }
+
+    public enum SonyCledis3DFormat {
+        Undefined,
+        FrameSequential,
+        DualInput
+    }
+
+    public enum SonyCledisFanMode {
+        Undefined,
+        Mid,
+        Low,
+        Stop
+    }
+
     public class SonyCledisTemperatures {
 
         //--- Properties ---
@@ -92,5 +117,9 @@ namespace RadiantPi.Sony.Cledis {
         Task SetInputAsync(SonyCledisInput input);
         Task<SonyCledisPictureMode> GetPictureModeAsync();
         Task SetPictureModeAsync(SonyCledisPictureMode mode);
+        Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status);
+        Task Set2D3DSelectionAsync(SonyCledis2D3D selection);
+        Task Set3DFormatAsync(SonyCledis3DFormat format);
+        Task SetFanModeAsync(SonyCledisFanMode mode);
     }
 }

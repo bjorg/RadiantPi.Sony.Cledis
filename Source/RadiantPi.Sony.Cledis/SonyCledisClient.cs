@@ -136,6 +136,36 @@ namespace RadiantPi.Sony.Cledis {
                 _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
+        public override Task Set2D3DSelectionAsync(SonyCledis2D3D selection)
+            => selection switch {
+                SonyCledis2D3D.Select2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), selection),
+                SonyCledis2D3D.Select3D => LogRequest(() => SendCommandAsync("2d3d_sel \"3d\""), selection),
+                _ => throw new ArgumentException("invalid value", nameof(selection))
+            };
+
+        public override Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status)
+            => status switch {
+                SonyCledisDualDisplayPort3D4K.Off => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"off\""), status),
+                SonyCledisDualDisplayPort3D4K.On => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"on\""), status),
+                _ => throw new ArgumentException("invalid value", nameof(status))
+            };
+
+        public override Task Set3DFormatAsync(SonyCledis3DFormat format)
+            => format switch {
+                SonyCledis3DFormat.DualInput => LogRequest(() => SendCommandAsync("3d_format \"dualinput\""), format),
+                SonyCledis3DFormat.FrameSequential => LogRequest(() => SendCommandAsync("3d_format \"framesequential\""), format),
+                _ => throw new ArgumentException("invalid value", nameof(format))
+            };
+
+        public override Task SetFanModeAsync(SonyCledisFanMode mode)
+            => mode switch {
+                SonyCledisFanMode.Low => LogRequest(() => SendCommandAsync("unit_fan_mode \"low\""), mode),
+                SonyCledisFanMode.Mid => LogRequest(() => SendCommandAsync("unit_fan_mode \"mid\""), mode),
+                SonyCledisFanMode.Stop => LogRequest(() => SendCommandAsync("unit_fan_mode \"stop\""), mode),
+                _ => throw new ArgumentException("invalid value", nameof(mode))
+            };
+
+
         public override void Dispose() {
             _mutex.Dispose();
             _telnet.Dispose();

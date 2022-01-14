@@ -53,6 +53,10 @@ namespace RadiantPi.Sony.Cledis {
         public abstract Task SetInputAsync(SonyCledisInput input);
         public abstract Task SetPictureModeAsync(SonyCledisPictureMode mode);
         public abstract Task SetPowerAsync(SonyCledisPower power);
+        public abstract Task Set2D3DSelectionAsync(SonyCledis2D3D selection);
+        public abstract Task Set3DFormatAsync(SonyCledis3DFormat format);
+        public abstract Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status);
+        public abstract Task SetFanModeAsync(SonyCledisFanMode mode);
 
         //--- Methods ---
         protected T ConvertResponse<T>(string response) {
