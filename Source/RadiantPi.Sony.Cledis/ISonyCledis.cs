@@ -60,13 +60,13 @@ namespace RadiantPi.Sony.Cledis {
         Mode10
     }
 
-    public enum SonyCledisDualDisplayPort3D4K {
+    public enum SonyCledisDualDisplayPort3D4KMode {
         Undefined,
         On,
         Off
     }
 
-    public enum SonyCledis2D3D {
+    public enum SonyCledis2D3DMode {
         Undefined,
         Select2D,
         Select3D
@@ -117,9 +117,11 @@ namespace RadiantPi.Sony.Cledis {
         Task SetInputAsync(SonyCledisInput input);
         Task<SonyCledisPictureMode> GetPictureModeAsync();
         Task SetPictureModeAsync(SonyCledisPictureMode mode);
-        Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status);
-        Task Set2D3DSelectionAsync(SonyCledis2D3D selection);
+        Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+        Task Set2D3DModeAsync(SonyCledis2D3DMode mode);
         Task Set3DFormatAsync(SonyCledis3DFormat format);
         Task SetFanModeAsync(SonyCledisFanMode mode);
+        Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift);
+        Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
     }
 }

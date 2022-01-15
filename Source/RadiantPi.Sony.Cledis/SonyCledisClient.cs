@@ -38,6 +38,18 @@ namespace RadiantPi.Sony.Cledis {
 
     public class SonyCledisClient : ASonyCledisClient {
 
+        //--- Class Methods ---
+        protected static string GetInputName(SonyCledisInput input)
+            => input switch {
+                SonyCledisInput.DisplayPort1 => "dp1",
+                SonyCledisInput.DisplayPort2 => "dp2",
+                SonyCledisInput.DisplayPortBoth => "dp1_2",
+                SonyCledisInput.Hdmi1 => "hdmi1",
+                SonyCledisInput.Hdmi2 => "hdmi2",
+                _ => throw new ArgumentException("invalid value", nameof(input))
+            };
+
+
         //--- Fields ---
         private readonly ITelnet _telnet;
         private readonly SemaphoreSlim _mutex = new SemaphoreSlim(1, 1);
@@ -97,14 +109,7 @@ namespace RadiantPi.Sony.Cledis {
             });
 
         public override Task SetInputAsync(SonyCledisInput input)
-            => input switch {
-                SonyCledisInput.DisplayPort1 => LogRequest(() => SendCommandAsync("input \"dp1\""), input),
-                SonyCledisInput.DisplayPort2 => LogRequest(() => SendCommandAsync("input \"dp2\""), input),
-                SonyCledisInput.DisplayPortBoth => LogRequest(() => SendCommandAsync("input \"dp1_2\""), input),
-                SonyCledisInput.Hdmi1 => LogRequest(() => SendCommandAsync("input \"hdmi1\""), input),
-                SonyCledisInput.Hdmi2 => LogRequest(() => SendCommandAsync("input \"hdmi2\""), input),
-                _ => throw new ArgumentException("invalid value", nameof(input))
-            };
+            => LogRequest(() => SendCommandAsync($"input \"{GetInputName(input)}\""), input);
 
         public override Task<SonyCledisPictureMode> GetPictureModeAsync()
             => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("picture_mode ?")) switch {
@@ -136,18 +141,18 @@ namespace RadiantPi.Sony.Cledis {
                 _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
-        public override Task Set2D3DSelectionAsync(SonyCledis2D3D selection)
-            => selection switch {
-                SonyCledis2D3D.Select2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), selection),
-                SonyCledis2D3D.Select3D => LogRequest(() => SendCommandAsync("2d3d_sel \"3d\""), selection),
-                _ => throw new ArgumentException("invalid value", nameof(selection))
+        public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode)
+            => mode switch {
+                SonyCledis2D3DMode.Select2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), mode),
+                SonyCledis2D3DMode.Select3D => LogRequest(() => SendCommandAsync("2d3d_sel \"3d\""), mode),
+                _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
-        public override Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status)
-            => status switch {
-                SonyCledisDualDisplayPort3D4K.Off => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"off\""), status),
-                SonyCledisDualDisplayPort3D4K.On => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"on\""), status),
-                _ => throw new ArgumentException("invalid value", nameof(status))
+        public override Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode)
+            => mode switch {
+                SonyCledisDualDisplayPort3D4KMode.Off => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"off\""), mode),
+                SonyCledisDualDisplayPort3D4KMode.On => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"on\""), mode),
+                _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
         public override Task Set3DFormatAsync(SonyCledis3DFormat format)
@@ -165,6 +170,11 @@ namespace RadiantPi.Sony.Cledis {
                 _ => throw new ArgumentException("invalid value", nameof(mode))
             };
 
+        public override Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift)
+            => LogRequest(() => SendCommandAsync($"pic_shift_h_ch --{GetInputName(input)} {shift}"), input, shift);
+
+        public override Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift)
+            => LogRequest(() => SendCommandAsync($"pic_shift_v_ch --{GetInputName(input)} {shift}"), input, shift);
 
         public override void Dispose() {
             _mutex.Dispose();
@@ -249,6 +259,11 @@ namespace RadiantPi.Sony.Cledis {
 
         private Task LogRequest<T>(Func<Task> callback, T parameter, [CallerMemberName] string methodName = "") {
             Logger?.LogDebug($"{methodName} request: {parameter}");
+            return callback();
+        }
+
+        private Task LogRequest<T1, T2>(Func<Task> callback, T1 parameter1, T2 parameter2, [CallerMemberName] string methodName = "") {
+            Logger?.LogDebug($"{methodName} request: {parameter1}, {parameter2}");
             return callback();
         }
     }

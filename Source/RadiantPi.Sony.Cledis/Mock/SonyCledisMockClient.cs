@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RadiantPi.Sony.Internal;
@@ -33,10 +34,12 @@ namespace RadiantPi.Sony.Cledis.Mock {
         private SonyCledisPowerStatus _power = SonyCledisPowerStatus.StandBy;
         private SonyCledisInput _input = SonyCledisInput.Hdmi1;
         private SonyCledisPictureMode _mode = SonyCledisPictureMode.Mode1;
-        private SonyCledisDualDisplayPort3D4K _3d4kStatus = SonyCledisDualDisplayPort3D4K.On;
+        private SonyCledisDualDisplayPort3D4KMode _3d4kStatus = SonyCledisDualDisplayPort3D4KMode.On;
         private SonyCledisFanMode _fanMode = SonyCledisFanMode.Mid;
-        private SonyCledis2D3D _2d3dSelection = SonyCledis2D3D.Select2D;
+        private SonyCledis2D3DMode _2d3dSelection = SonyCledis2D3DMode.Select2D;
         private SonyCledis3DFormat _3dFormat = SonyCledis3DFormat.FrameSequential;
+        private Dictionary<SonyCledisInput, int> _verticalPictureShift = new Dictionary<SonyCledisInput, int>();
+        private Dictionary<SonyCledisInput, int> _horizontalPictureShift = new Dictionary<SonyCledisInput, int>();
 
         //--- Constructors ---
         public SonyCledisMockClient(ILogger? logger = null) : base(logger) { }
@@ -83,13 +86,13 @@ namespace RadiantPi.Sony.Cledis.Mock {
             return Task.CompletedTask;
         }
 
-        public override Task Set2D3DSelectionAsync(SonyCledis2D3D selection) {
-            _2d3dSelection = selection;
+        public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode) {
+            _2d3dSelection = mode;
             return Task.CompletedTask;
         }
 
-        public override Task SetDualDisplayPort3D4KAsync(SonyCledisDualDisplayPort3D4K status) {
-            _3d4kStatus = status;
+        public override Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode) {
+            _3d4kStatus = mode;
             return Task.CompletedTask;
         }
 
@@ -100,6 +103,16 @@ namespace RadiantPi.Sony.Cledis.Mock {
 
         public override Task SetFanModeAsync(SonyCledisFanMode mode) {
             _fanMode = mode;
+            return Task.CompletedTask;
+        }
+
+        public override Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift) {
+            _horizontalPictureShift[input] = shift;
+            return Task.CompletedTask;
+        }
+
+        public override Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift) {
+            _verticalPictureShift[input] = shift;
             return Task.CompletedTask;
         }
 
