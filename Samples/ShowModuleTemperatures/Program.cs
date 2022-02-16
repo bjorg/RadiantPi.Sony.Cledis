@@ -40,6 +40,12 @@ for(var row = 0; row < temperatures.RowCount; ++row) {
 }
 table.Caption("Sony C-LED Module Temperatures");
 AnsiConsole.Write(table);
+AnsiConsole.MarkupLine("Legend");
+AnsiConsole.MarkupLine($"* [{ConvertTemperatureToColorCode(15f)}]Min - 15°[/]");
+AnsiConsole.MarkupLine($"* [{ConvertTemperatureToColorCode(25f)}]Optimal - 25°[/]");
+AnsiConsole.MarkupLine($"* [{ConvertTemperatureToColorCode(35f)}]Warning - 35°[/]");
+AnsiConsole.MarkupLine($"* [{ConvertTemperatureToColorCode(45f)}]Danger - 45°[/]");
+AnsiConsole.MarkupLine($"* [{ConvertTemperatureToColorCode(55f)}]Max - 55°[/]");
 
 // helper functions
 static string ConvertTemperatureToColorCode(float temperature) {

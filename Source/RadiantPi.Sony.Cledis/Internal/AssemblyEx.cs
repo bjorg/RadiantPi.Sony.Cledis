@@ -1,6 +1,6 @@
 /*
  * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
- * Copyright (C) 2020-2021 - Steve G. Bjorg
+ * Copyright (C) 2020-2022 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -16,35 +16,33 @@
  * with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
+namespace RadiantPi.Sony.Internal;
+
 using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace RadiantPi.Sony.Internal {
+internal static class AssemblyEx {
 
-    internal static class AssemblyEx {
+    //--- Extension Methods ---
+    public static string ReadManifestResource(this System.Reflection.Assembly assembly, string resourceName, bool convertLineEndings = true) {
 
-        //--- Extension Methods ---
-        public static string ReadManifestResource(this System.Reflection.Assembly assembly, string resourceName, bool convertLineEndings = true) {
+        // load resource stream
+        using var resource = assembly.GetManifestResourceStream(resourceName) ?? throw new ApplicationException($"unable to locate embedded resource: '{resourceName}'");
 
-            // load resource stream
-            using var resource = assembly.GetManifestResourceStream(resourceName) ?? throw new ApplicationException($"unable to locate embedded resource: '{resourceName}'");
+        // check if resource stream has to be decompressed
+        using var stream = resourceName.EndsWith(".gz", StringComparison.OrdinalIgnoreCase)
+            ? new GZipStream(resource, CompressionMode.Decompress)
+            : resource;
 
-            // check if resource stream has to be decompressed
-            using var stream = resourceName.EndsWith(".gz", StringComparison.OrdinalIgnoreCase)
-                ? new GZipStream(resource, CompressionMode.Decompress)
-                : resource;
+        // parse resource stream into a string
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        var result = reader.ReadToEnd();
 
-            // parse resource stream into a string
-            using var reader = new StreamReader(stream, Encoding.UTF8);
-            var result = reader.ReadToEnd();
-
-            // optionally remove carriage return characters
-            if(convertLineEndings) {
-                result = result.Replace("\r", "");
-            }
-            return result;
+        // optionally remove carriage return characters
+        if(convertLineEndings) {
+            result = result.Replace("\r", "");
         }
+        return result;
     }
 }

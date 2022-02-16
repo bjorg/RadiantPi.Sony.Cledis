@@ -1,6 +1,6 @@
 /*
  * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
- * Copyright (C) 2020-2021 - Steve G. Bjorg
+ * Copyright (C) 2020-2022 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -16,11 +16,10 @@
  * with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace RadiantPi.Sony.Cledis.Exceptions {
+namespace RadiantPi.Sony.Cledis.Exceptions;
 
-    public class SonyCledisCommandValueException : ASonyCledisException {
+public class SonyCledisCommandValueException : ASonyCledisException {
 
-        //--- Constructors ---
-        public SonyCledisCommandValueException() : base("err_val: The value set using a command is out of the range") { }
-    }
+    //--- Constructors ---
+    public SonyCledisCommandValueException() : base("err_val: The value set using a command is out of the range") { }
 }

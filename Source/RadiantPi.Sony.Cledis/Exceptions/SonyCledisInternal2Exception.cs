@@ -1,6 +1,6 @@
 /*
  * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
- * Copyright (C) 2020-2021 - Steve G. Bjorg
+ * Copyright (C) 2020-2022 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -16,11 +16,10 @@
  * with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace RadiantPi.Sony.Cledis.Exceptions {
+namespace RadiantPi.Sony.Cledis.Exceptions;
 
-    public class SonyCledisInternal2Exception : ASonyCledisException {
+public class SonyCledisInternal2Exception : ASonyCledisException {
 
-        //--- Constructors ---
-        public SonyCledisInternal2Exception() : base("err_internal2: A communication error occurred in the controller") { }
-    }
+    //--- Constructors ---
+    public SonyCledisInternal2Exception() : base("err_internal2: A communication error occurred in the controller") { }
 }
