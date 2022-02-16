@@ -1,6 +1,6 @@
 /*
  * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
- * Copyright (C) 2020-2021 - Steve G. Bjorg
+ * Copyright (C) 2020-2022 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -16,15 +16,12 @@
  * with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
+namespace RadiantPi.Sony.Cledis.Exceptions;
 
-namespace RadiantPi.Sony.Cledis.Exceptions {
+public abstract class ASonyCledisException : Exception {
 
-    public abstract class ASonyCledisException : Exception {
-
-        //--- Constructors ---
-        protected ASonyCledisException() { }
-        protected ASonyCledisException(string message) : base(message) { }
-        protected ASonyCledisException(string message, Exception innerException) : base(message, innerException) { }
-    }
+    //--- Constructors ---
+    protected ASonyCledisException() { }
+    protected ASonyCledisException(string message) : base(message) { }
+    protected ASonyCledisException(string message, Exception innerException) : base(message, innerException) { }
 }

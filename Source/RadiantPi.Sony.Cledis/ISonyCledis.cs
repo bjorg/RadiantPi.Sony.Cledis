@@ -1,6 +1,6 @@
 ﻿/*
  * RadiantPi.Sony.Cledis - Communication client for Sony C-LED
- * Copyright (C) 2020-2021 - Steve G. Bjorg
+ * Copyright (C) 2020-2022 - Steve G. Bjorg
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -16,112 +16,108 @@
  * with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Threading.Tasks;
+namespace RadiantPi.Sony.Cledis;
 
-namespace RadiantPi.Sony.Cledis {
+public enum SonyCledisPower {
+    Undefined,
+    On,
+    Off
+}
 
-    public enum SonyCledisPower {
-        Undefined,
-        On,
-        Off
-    }
+public enum SonyCledisPowerStatus {
+    Undefined,
+    StandBy,
+    On,
+    Updating,
+    Startup,
+    ShuttingDown,
+    Initializing
+}
 
-    public enum SonyCledisPowerStatus {
-        Undefined,
-        StandBy,
-        On,
-        Updating,
-        Startup,
-        ShuttingDown,
-        Initializing
-    }
+public enum SonyCledisInput {
+    Undefined,
+    Hdmi1,
+    Hdmi2,
+    DisplayPort1,
+    DisplayPort2,
+    DisplayPortBoth
+}
 
-    public enum SonyCledisInput {
-        Undefined,
-        Hdmi1,
-        Hdmi2,
-        DisplayPort1,
-        DisplayPort2,
-        DisplayPortBoth
-    }
+public enum SonyCledisPictureMode {
+    Undefined,
+    Mode1,
+    Mode2,
+    Mode3,
+    Mode4,
+    Mode5,
+    Mode6,
+    Mode7,
+    Mode8,
+    Mode9,
+    Mode10
+}
 
-    public enum SonyCledisPictureMode {
-        Undefined,
-        Mode1,
-        Mode2,
-        Mode3,
-        Mode4,
-        Mode5,
-        Mode6,
-        Mode7,
-        Mode8,
-        Mode9,
-        Mode10
-    }
+public enum SonyCledisDualDisplayPort3D4KMode {
+    Undefined,
+    On,
+    Off
+}
 
-    public enum SonyCledisDualDisplayPort3D4KMode {
-        Undefined,
-        On,
-        Off
-    }
+public enum SonyCledis2D3DMode {
+    Undefined,
+    Select2D,
+    Select3D
+}
 
-    public enum SonyCledis2D3DMode {
-        Undefined,
-        Select2D,
-        Select3D
-    }
+public enum SonyCledis3DFormat {
+    Undefined,
+    FrameSequential,
+    DualInput
+}
 
-    public enum SonyCledis3DFormat {
-        Undefined,
-        FrameSequential,
-        DualInput
-    }
+public enum SonyCledisFanMode {
+    Undefined,
+    Mid,
+    Low,
+    Stop
+}
 
-    public enum SonyCledisFanMode {
-        Undefined,
-        Mid,
-        Low,
-        Stop
-    }
+public class SonyCledisTemperatures {
 
-    public class SonyCledisTemperatures {
+    //--- Properties ---
+    public float ControllerTemperature { get; set; }
+    public SonyCledisModuleTemperature[,] Modules { get; set; } = new SonyCledisModuleTemperature[0, 0];
+    public int RowCount => Modules.GetLength(1);
+    public int ColumnCount => Modules.GetLength(0);
+}
 
-        //--- Properties ---
-        public float ControllerTemperature { get; set; }
-        public SonyCledisModuleTemperature[,] Modules { get; set; } = new SonyCledisModuleTemperature[0, 0];
-        public int RowCount => Modules.GetLength(1);
-        public int ColumnCount => Modules.GetLength(0);
-    }
+public class SonyCledisModuleTemperature {
 
-    public class SonyCledisModuleTemperature {
+    //--- Properties ---
+    public string? Id { get; set; }
+    public int Row { get; set; }
+    public int Column { get; set; }
+    public float AmbientTemperature { get; set; }
+    public float BoardTemperature { get; set; }
+    public float[] CellTemperatures { get; set; } = new float[12];
+}
 
-        //--- Properties ---
-        public string? Id { get; set; }
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public float AmbientTemperature { get; set; }
-        public float BoardTemperature { get; set; }
-        public float[] CellTemperatures { get; set; } = new float[12];
-    }
+public interface ISonyCledis : IDisposable {
 
-    public interface ISonyCledis : IDisposable {
-
-        //--- Methods ---
-        Task<string> GetModelNameAsync();
-        Task<long> GetSerialNumberAsync();
-        Task<SonyCledisTemperatures> GetTemperatureAsync();
-        Task<SonyCledisPowerStatus> GetPowerStatusAsync();
-        Task SetPowerAsync(SonyCledisPower power);
-        Task<SonyCledisInput> GetInputAsync();
-        Task SetInputAsync(SonyCledisInput input);
-        Task<SonyCledisPictureMode> GetPictureModeAsync();
-        Task SetPictureModeAsync(SonyCledisPictureMode mode);
-        Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
-        Task Set2D3DModeAsync(SonyCledis2D3DMode mode);
-        Task Set3DFormatAsync(SonyCledis3DFormat format);
-        Task SetFanModeAsync(SonyCledisFanMode mode);
-        Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift);
-        Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
-    }
+    //--- Methods ---
+    Task<string> GetModelNameAsync();
+    Task<long> GetSerialNumberAsync();
+    Task<SonyCledisTemperatures> GetTemperatureAsync();
+    Task<SonyCledisPowerStatus> GetPowerStatusAsync();
+    Task SetPowerAsync(SonyCledisPower power);
+    Task<SonyCledisInput> GetInputAsync();
+    Task SetInputAsync(SonyCledisInput input);
+    Task<SonyCledisPictureMode> GetPictureModeAsync();
+    Task SetPictureModeAsync(SonyCledisPictureMode mode);
+    Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+    Task Set2D3DModeAsync(SonyCledis2D3DMode mode);
+    Task Set3DFormatAsync(SonyCledis3DFormat format);
+    Task SetFanModeAsync(SonyCledisFanMode mode);
+    Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift);
+    Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
 }
