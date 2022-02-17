@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>RadiantPi.Sony.Cledis</PackageId>
-    <Version>2.0</Version>
+    <Version>2.0.1</Version>
     <Title>RadiantPi Sony C-LED (Cledis) Client Library</Title>
     <Description>Communication client for Sony C-LED (Cledis)</Description>
     <Copyright>Copyright (C) 2020-2022</Copyright>
@@ -25,8 +25,8 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="RadiantPi.Telnet" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="RadiantPi.Telnet" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\*" />
