@@ -65,6 +65,7 @@ public class SonyCledisClient : ASonyCledisClient {
     public SonyCledisClient(ITelnet telnet, ILogger<SonyCledisClient>? logger) : base(logger) {
         _telnet = telnet ?? throw new ArgumentNullException(nameof(telnet));
         _telnet.ValidateConnectionAsync = ValidateConnectionAsync;
+        _telnet.AutoReconnect = false;
     }
 
     //--- Methods ---
