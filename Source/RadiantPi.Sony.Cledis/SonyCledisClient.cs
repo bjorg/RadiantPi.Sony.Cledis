@@ -207,6 +207,9 @@ public class SonyCledisClient : ASonyCledisClient {
         => ValidateResponse(await SendAsync(message + "\r").ConfigureAwait(false));
 
     private async Task<string> SendAsync(string message) {
+        if(!_telnet.Connected) {
+            await _telnet.ConnectAsync().ConfigureAwait(false);
+        }
         await _mutex.WaitAsync().ConfigureAwait(false);
         try {
             TaskCompletionSource<string> responseSource = new();
