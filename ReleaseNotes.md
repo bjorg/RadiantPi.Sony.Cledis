@@ -1,7 +1,14 @@
 # Release Notes
 
 
-## v2.0.1 (2022-02-15)
+## v2.1 (2022-02-16)
+
+### Fixes
+
+* Disable auto-reconnect for Telnet connection as it interfers with the communication protocol.
+
+
+## v2.0.1 (2022-02-16)
 
 ### Features
 
