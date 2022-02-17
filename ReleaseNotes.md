@@ -5,7 +5,7 @@
 
 ### Fixes
 
-* Disable auto-reconnect for Telnet connection as it interfers with the communication protocol.
+* Disable auto-reconnect for Telnet connection as it interferes with the communication protocol.
 
 
 ## v2.0.1 (2022-02-16)
