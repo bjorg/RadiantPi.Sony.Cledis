@@ -1,13 +1,13 @@
 # Release Notes
 
 
-# v2.0.1 (2022-02-15)
+## v2.0.1 (2022-02-15)
 
-## Features
+### Features
 
 * Upgraded `Microsoft.Extensions.Logging` package to 6.0.0
 
-## Fixes
+### Fixes
 
 * Fixed a regression where sending was broken because the connection was never opened.
 
