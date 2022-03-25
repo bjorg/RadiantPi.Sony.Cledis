@@ -139,6 +139,13 @@ public class SonyCledisClient : ASonyCledisClient {
             _ => throw new ArgumentException("invalid value", nameof(mode))
         };
 
+    public override Task<SonyCledis2D3DMode> Get2D3DModeAsync()
+        => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("2d3d_sel ?")) switch {
+            "2d" => SonyCledis2D3DMode.Select2D,
+            "3d" => SonyCledis2D3DMode.Select3D,
+            var value => throw new SonyCledisUnrecognizedResponseException(value)
+        });
+
     public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode)
         => mode switch {
             SonyCledis2D3DMode.Select2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), mode),
@@ -146,12 +153,12 @@ public class SonyCledisClient : ASonyCledisClient {
             _ => throw new ArgumentException("invalid value", nameof(mode))
         };
 
-    public override Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode)
-        => mode switch {
-            SonyCledisDualDisplayPort3D4KMode.Off => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"off\""), mode),
-            SonyCledisDualDisplayPort3D4KMode.On => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"on\""), mode),
-            _ => throw new ArgumentException("invalid value", nameof(mode))
-        };
+    public override Task<SonyCledis3DFormat> Get3DFormatAsync()
+        => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("3d_format ?")) switch {
+            "dualinput" => SonyCledis3DFormat.DualInput,
+            "framesequential" => SonyCledis3DFormat.FrameSequential,
+            var value => throw new SonyCledisUnrecognizedResponseException(value)
+        });
 
     public override Task Set3DFormatAsync(SonyCledis3DFormat format)
         => format switch {
@@ -159,6 +166,14 @@ public class SonyCledisClient : ASonyCledisClient {
             SonyCledis3DFormat.FrameSequential => LogRequest(() => SendCommandAsync("3d_format \"framesequential\""), format),
             _ => throw new ArgumentException("invalid value", nameof(format))
         };
+
+    public override Task<SonyCledisFanMode> GetFanModeAsync()
+        => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("unit_fan_mode ?")) switch {
+            "low" => SonyCledisFanMode.Low,
+            "mid" => SonyCledisFanMode.Mid,
+            "stop" => SonyCledisFanMode.Stop,
+            var value => throw new SonyCledisUnrecognizedResponseException(value)
+        });
 
     public override Task SetFanModeAsync(SonyCledisFanMode mode)
         => mode switch {
@@ -168,11 +183,31 @@ public class SonyCledisClient : ASonyCledisClient {
             _ => throw new ArgumentException("invalid value", nameof(mode))
         };
 
+    public override Task<int> GetHorizontalPictureShiftAsync(SonyCledisInput input)
+        => LogRequestResponse(async () => ConvertResponse<int>(await SendAsync($"pic_shift_h_ch --{GetInputName(input)} ?")));
+
     public override Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift)
         => LogRequest(() => SendCommandAsync($"pic_shift_h_ch --{GetInputName(input)} {shift}"), input, shift);
 
+    public override Task<int> GetVerticalPictureShiftAsync(SonyCledisInput input)
+        => LogRequestResponse(async () => ConvertResponse<int>(await SendAsync($"pic_shift_v_ch --{GetInputName(input)} ?")));
+
     public override Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift)
         => LogRequest(() => SendCommandAsync($"pic_shift_v_ch --{GetInputName(input)} {shift}"), input, shift);
+
+    public override Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync()
+        => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("dp_dual_3d_4k ?")) switch {
+            "on" => SonyCledisDualDisplayPort3D4KMode.On,
+            "off" => SonyCledisDualDisplayPort3D4KMode.Off,
+            var value => throw new SonyCledisUnrecognizedResponseException(value)
+        });
+
+    public override Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode)
+        => mode switch {
+            SonyCledisDualDisplayPort3D4KMode.Off => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"off\""), mode),
+            SonyCledisDualDisplayPort3D4KMode.On => LogRequest(() => SendCommandAsync("dp_dual_3d_4k \"on\""), mode),
+            _ => throw new ArgumentException("invalid value", nameof(mode))
+        };
 
     public override void Dispose() {
         _mutex.Dispose();

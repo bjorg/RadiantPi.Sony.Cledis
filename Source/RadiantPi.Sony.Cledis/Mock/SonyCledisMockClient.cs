@@ -84,30 +84,48 @@ public class SonyCledisMockClient : ASonyCledisClient {
         return Task.CompletedTask;
     }
 
+    public override Task<SonyCledis2D3DMode> Get2D3DModeAsync()
+        => Task.FromResult(_2d3dSelection);
+
     public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode) {
         _2d3dSelection = mode;
         return Task.CompletedTask;
     }
+
+    public override Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync()
+        => Task.FromResult(_3d4kStatus);
 
     public override Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode) {
         _3d4kStatus = mode;
         return Task.CompletedTask;
     }
 
+    public override Task<SonyCledis3DFormat> Get3DFormatAsync()
+        => Task.FromResult(_3dFormat);
+
     public override Task Set3DFormatAsync(SonyCledis3DFormat format) {
         _3dFormat = format;
         return Task.CompletedTask;
     }
+
+    public override Task<SonyCledisFanMode> GetFanModeAsync()
+        => Task.FromResult(_fanMode);
 
     public override Task SetFanModeAsync(SonyCledisFanMode mode) {
         _fanMode = mode;
         return Task.CompletedTask;
     }
 
+    public override Task<int> GetHorizontalPictureShiftAsync(SonyCledisInput input)
+        => Task.FromResult(_horizontalPictureShift.TryGetValue(input, out var shift) ? shift : 0);
+
     public override Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift) {
         _horizontalPictureShift[input] = shift;
         return Task.CompletedTask;
     }
+
+    public override Task<int> GetVerticalPictureShiftAsync(SonyCledisInput input)
+        => Task.FromResult(_verticalPictureShift.TryGetValue(input, out var shift) ? shift : 0);
 
     public override Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift) {
         _verticalPictureShift[input] = shift;

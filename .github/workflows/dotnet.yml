@@ -27,6 +27,9 @@ jobs:
       - name: Build Show Module Temperatures Sample
         run: dotnet build Samples/ShowModuleTemperatures/ShowModuleTemperatures.csproj
 
+      - name: Build Show Status
+        run: dotnet build Samples/ShowStatus/ShowStatus.csproj
+
       # Publish RadiantPi.Sony.Cledis
       - name: Publish
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
