@@ -42,21 +42,27 @@ public abstract class ASonyCledisClient : ISonyCledis {
 
     //--- Abstract Methods ---
     public abstract void Dispose();
-    public abstract Task<SonyCledisInput> GetInputAsync();
     public abstract Task<string> GetModelNameAsync();
-    public abstract Task<SonyCledisPictureMode> GetPictureModeAsync();
-    public abstract Task<SonyCledisPowerStatus> GetPowerStatusAsync();
     public abstract Task<long> GetSerialNumberAsync();
     public abstract Task<SonyCledisTemperatures> GetTemperatureAsync();
-    public abstract Task SetInputAsync(SonyCledisInput input);
-    public abstract Task SetPictureModeAsync(SonyCledisPictureMode mode);
+    public abstract Task<SonyCledisPowerStatus> GetPowerStatusAsync();
     public abstract Task SetPowerAsync(SonyCledisPower power);
+    public abstract Task<SonyCledisInput> GetInputAsync();
+    public abstract Task SetInputAsync(SonyCledisInput input);
+    public abstract Task<SonyCledisPictureMode> GetPictureModeAsync();
+    public abstract Task SetPictureModeAsync(SonyCledisPictureMode mode);
+    public abstract Task<SonyCledis2D3DMode> Get2D3DModeAsync();
     public abstract Task Set2D3DModeAsync(SonyCledis2D3DMode mode);
+    public abstract Task<SonyCledis3DFormat> Get3DFormatAsync();
     public abstract Task Set3DFormatAsync(SonyCledis3DFormat format);
-    public abstract Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+    public abstract Task<SonyCledisFanMode> GetFanModeAsync();
     public abstract Task SetFanModeAsync(SonyCledisFanMode mode);
+    public abstract Task<int> GetHorizontalPictureShiftAsync(SonyCledisInput input);
     public abstract Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift);
+    public abstract Task<int> GetVerticalPictureShiftAsync(SonyCledisInput input);
     public abstract Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
+    public abstract Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync();
+    public abstract Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
 
     //--- Methods ---
     protected T ConvertResponse<T>(string response) {

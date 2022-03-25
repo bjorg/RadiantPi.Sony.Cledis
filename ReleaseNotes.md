@@ -1,6 +1,22 @@
 # Release Notes
 
 
+## v2.2 (2022-03-25)
+
+### Features
+
+* Added `Get2D3DModeAsync()` to get current 2D/3D mode.
+* Added `Get3DFormatAsync()` to get 3D image format.
+* Added `GetFanModeAsync()` to get fan speed.
+* Added `GetHorizontalPictureShiftAsync()` to get the horizontal shift of the image by input.
+* Added `GetVerticalPictureShiftAsync()` to get the vertical shift of the image by input.
+* Added `GetDualDisplayPort3D4KModeAsync()` to determine if 3D 4K mode is enabled.
+
+### Samples
+
+* Added `ShowStatus` to show all values that can be read from the controller.
+
+
 ## v2.1 (2022-02-16)
 
 ### Fixes

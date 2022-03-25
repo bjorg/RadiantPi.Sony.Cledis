@@ -8,9 +8,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Spectre.Console" Version="0.43.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="../../Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj" />
   </ItemGroup>
 </Project>
