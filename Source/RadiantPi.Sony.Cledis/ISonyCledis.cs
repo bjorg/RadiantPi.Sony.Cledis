@@ -114,10 +114,16 @@ public interface ISonyCledis : IDisposable {
     Task SetInputAsync(SonyCledisInput input);
     Task<SonyCledisPictureMode> GetPictureModeAsync();
     Task SetPictureModeAsync(SonyCledisPictureMode mode);
-    Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+    Task<SonyCledis2D3DMode> Get2D3DModeAsync();
     Task Set2D3DModeAsync(SonyCledis2D3DMode mode);
+    Task<SonyCledis3DFormat> Get3DFormatAsync();
     Task Set3DFormatAsync(SonyCledis3DFormat format);
+    Task<SonyCledisFanMode> GetFanModeAsync();
     Task SetFanModeAsync(SonyCledisFanMode mode);
+    Task<int> GetHorizontalPictureShiftAsync(SonyCledisInput input);
     Task SetHorizontalPictureShiftAsync(SonyCledisInput input, int shift);
+    Task<int> GetVerticalPictureShiftAsync(SonyCledisInput input);
     Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
+    Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync();
+    Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
 }
