@@ -34,7 +34,7 @@ public class SonyCledisMockClient : ASonyCledisClient {
     private SonyCledisPictureMode _mode = SonyCledisPictureMode.Mode1;
     private SonyCledisDualDisplayPort3D4KMode _3d4kStatus = SonyCledisDualDisplayPort3D4KMode.On;
     private SonyCledisFanMode _fanMode = SonyCledisFanMode.Mid;
-    private SonyCledis2D3DMode _2d3dSelection = SonyCledis2D3DMode.Select2D;
+    private SonyCledis2D3DMode _2d3dmode = SonyCledis2D3DMode.Mode2D;
     private SonyCledis3DFormat _3dFormat = SonyCledis3DFormat.FrameSequential;
     private Dictionary<SonyCledisInput, int> _verticalPictureShift = new Dictionary<SonyCledisInput, int>();
     private Dictionary<SonyCledisInput, int> _horizontalPictureShift = new Dictionary<SonyCledisInput, int>();
@@ -85,10 +85,10 @@ public class SonyCledisMockClient : ASonyCledisClient {
     }
 
     public override Task<SonyCledis2D3DMode> Get2D3DModeAsync()
-        => Task.FromResult(_2d3dSelection);
+        => Task.FromResult(_2d3dmode);
 
     public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode) {
-        _2d3dSelection = mode;
+        _2d3dmode = mode;
         return Task.CompletedTask;
     }
 
