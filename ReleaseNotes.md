@@ -1,6 +1,17 @@
 # Release Notes
 
 
+## v2.3 (2022-03-26)
+
+### BREAKING CHANGES
+
+* Renamed `SonyCledis2D3DMode.Select2D` to `Mode2D`. Ditto for `Select3D`.
+
+### Fixes
+
+* Fixed an issue where commands had an extra `\r` character that caused them to fail.
+
+
 ## v2.2 (2022-03-25)
 
 ### Features
