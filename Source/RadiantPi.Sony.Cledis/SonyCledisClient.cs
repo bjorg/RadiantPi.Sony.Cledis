@@ -18,7 +18,6 @@
 
 namespace RadiantPi.Sony.Cledis;
 
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -141,15 +140,15 @@ public class SonyCledisClient : ASonyCledisClient {
 
     public override Task<SonyCledis2D3DMode> Get2D3DModeAsync()
         => LogRequestResponse(async () => ConvertResponse<string>(await SendAsync("2d3d_sel ?")) switch {
-            "2d" => SonyCledis2D3DMode.Select2D,
-            "3d" => SonyCledis2D3DMode.Select3D,
+            "2d" => SonyCledis2D3DMode.Mode2D,
+            "3d" => SonyCledis2D3DMode.Mode3D,
             var value => throw new SonyCledisUnrecognizedResponseException(value)
         });
 
     public override Task Set2D3DModeAsync(SonyCledis2D3DMode mode)
         => mode switch {
-            SonyCledis2D3DMode.Select2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), mode),
-            SonyCledis2D3DMode.Select3D => LogRequest(() => SendCommandAsync("2d3d_sel \"3d\""), mode),
+            SonyCledis2D3DMode.Mode2D => LogRequest(() => SendCommandAsync("2d3d_sel \"2d\""), mode),
+            SonyCledis2D3DMode.Mode3D => LogRequest(() => SendCommandAsync("2d3d_sel \"3d\""), mode),
             _ => throw new ArgumentException("invalid value", nameof(mode))
         };
 
@@ -240,7 +239,7 @@ public class SonyCledisClient : ASonyCledisClient {
     }
 
     private async Task SendCommandAsync(string message)
-        => ValidateResponse(await SendAsync(message + "\r").ConfigureAwait(false));
+        => ValidateResponse(await SendAsync(message).ConfigureAwait(false));
 
     private async Task<string> SendAsync(string message) {
         if(!_telnet.Connected) {

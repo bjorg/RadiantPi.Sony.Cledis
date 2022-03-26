@@ -65,8 +65,8 @@ public enum SonyCledisDualDisplayPort3D4KMode {
 
 public enum SonyCledis2D3DMode {
     Undefined,
-    Select2D,
-    Select3D
+    Mode2D,
+    Mode3D
 }
 
 public enum SonyCledis3DFormat {

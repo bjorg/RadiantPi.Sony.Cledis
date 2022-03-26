@@ -4,10 +4,11 @@
     <RootNamespace>RadiantPi.Sony.Cledis</RootNamespace>
     <NoWarn>CS1998</NoWarn>
     <Deterministic>true</Deterministic>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
     <PackageId>RadiantPi.Sony.Cledis</PackageId>
-    <Version>2.2</Version>
+    <Version>2.3</Version>
     <Title>RadiantPi Sony C-LED (Cledis) Client Library</Title>
     <Description>Communication client for Sony C-LED (Cledis)</Description>
     <Copyright>Copyright (C) 2020-2022</Copyright>
@@ -18,12 +19,6 @@
     <PackageTags>Sony;CLEDIS;Crystal-LED</PackageTags>
     <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Using Include="System" />
-    <Using Include="System.Linq" />
-    <Using Include="System.Threading" />
-    <Using Include="System.Threading.Tasks" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="RadiantPi.Telnet" Version="2.2" />
