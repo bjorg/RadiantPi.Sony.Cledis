@@ -25,11 +25,36 @@ using RadiantPi.Sony.Cledis.Exceptions;
 
 public abstract class ASonyCledisClient : ISonyCledis {
 
+    //--- Types ---
+    protected class SonyCledisModuleTemperatureArrayConverter : JsonConverter<SonyCledisModuleTemperature[,]> {
+
+        //--- Methods ---
+        public override SonyCledisModuleTemperature[,]? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            => throw new NotImplementedException();
+
+        public override void Write(Utf8JsonWriter writer, SonyCledisModuleTemperature[,] value, JsonSerializerOptions options) {
+            var converter = (JsonConverter<SonyCledisModuleTemperature>)options.GetConverter(typeof(SonyCledisModuleTemperature));
+            writer.WriteStartArray();
+            for(var rowIndex = 0; rowIndex < value.GetLength(1); ++rowIndex) {
+                for(var columnIndex = 0; columnIndex < value.GetLength(0); ++columnIndex) {
+                    writer.WriteStartObject();
+                    writer.WriteNumber("Row", rowIndex);
+                    writer.WriteNumber("Column", columnIndex);
+                    writer.WritePropertyName("Module");
+                    converter.Write(writer, value[columnIndex, rowIndex], options);
+                    writer.WriteEndObject();
+                }
+            }
+            writer.WriteEndArray();
+        }
+    }
+
     //--- Class Fields ---
     protected static readonly JsonSerializerOptions g_jsonSerializerOptions = new() {
         WriteIndented = true,
         Converters = {
-            new JsonStringEnumConverter()
+            new JsonStringEnumConverter(),
+            new SonyCledisModuleTemperatureArrayConverter()
         }
     };
 
