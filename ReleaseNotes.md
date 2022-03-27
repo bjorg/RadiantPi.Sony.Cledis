@@ -1,6 +1,17 @@
 # Release Notes
 
 
+## v2.4 (2022-03-26)
+
+### BREAKING CHANGES
+
+* Removed `Id` property in `SonyCledisModuleTemperature` as it was never set.
+
+### Fixes
+
+* Fixed an issue with serializing the Sony C-LED temperatures data structure during trace logging.
+
+
 ## v2.3 (2022-03-26)
 
 ### BREAKING CHANGES
