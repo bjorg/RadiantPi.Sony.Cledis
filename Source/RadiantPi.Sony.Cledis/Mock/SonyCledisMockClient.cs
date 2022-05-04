@@ -36,6 +36,7 @@ public class SonyCledisMockClient : ASonyCledisClient {
     private SonyCledisFanMode _fanMode = SonyCledisFanMode.Mid;
     private SonyCledis2D3DMode _2d3dmode = SonyCledis2D3DMode.Mode2D;
     private SonyCledis3DFormat _3dFormat = SonyCledis3DFormat.FrameSequential;
+    private SonyCledisLightOutputMode _lightOutputMode = SonyCledisLightOutputMode.Low;
     private Dictionary<SonyCledisInput, int> _verticalPictureShift = new Dictionary<SonyCledisInput, int>();
     private Dictionary<SonyCledisInput, int> _horizontalPictureShift = new Dictionary<SonyCledisInput, int>();
 
@@ -113,6 +114,11 @@ public class SonyCledisMockClient : ASonyCledisClient {
 
     public override Task SetFanModeAsync(SonyCledisFanMode mode) {
         _fanMode = mode;
+        return Task.CompletedTask;
+    }
+
+    public override Task SetLightOutputMode(SonyCledisLightOutputMode mode) {
+        _lightOutputMode = mode;
         return Task.CompletedTask;
     }
 

@@ -1,6 +1,13 @@
 # Release Notes
 
 
+## v2.5 (2022-05-04)
+
+### Features
+
+* Added `SetLightOutputMode()` to set the light output.
+
+
 ## v2.4 (2022-03-26)
 
 ### BREAKING CHANGES

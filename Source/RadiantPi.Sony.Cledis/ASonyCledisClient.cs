@@ -87,6 +87,7 @@ public abstract class ASonyCledisClient : ISonyCledis {
     public abstract Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
     public abstract Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync();
     public abstract Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+    public abstract Task SetLightOutputMode(SonyCledisLightOutputMode mode);
 
     //--- Methods ---
     protected T ConvertResponse<T>(string response) {

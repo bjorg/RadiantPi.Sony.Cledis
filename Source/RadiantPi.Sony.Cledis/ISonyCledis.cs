@@ -82,6 +82,14 @@ public enum SonyCledisFanMode {
     Stop
 }
 
+public enum SonyCledisLightOutputMode {
+    Undefined,
+    Low,
+    Mid,
+    High,
+    Full
+}
+
 public class SonyCledisTemperatures {
 
     //--- Properties ---
@@ -125,4 +133,5 @@ public interface ISonyCledis : IDisposable {
     Task SetVerticalPictureShiftAsync(SonyCledisInput input, int shift);
     Task<SonyCledisDualDisplayPort3D4KMode> GetDualDisplayPort3D4KModeAsync();
     Task SetDualDisplayPort3D4KModeAsync(SonyCledisDualDisplayPort3D4KMode mode);
+    Task SetLightOutputMode(SonyCledisLightOutputMode mode);
 }
