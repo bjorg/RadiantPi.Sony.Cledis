@@ -182,6 +182,15 @@ public class SonyCledisClient : ASonyCledisClient {
             _ => throw new ArgumentException("invalid value", nameof(mode))
         };
 
+    public override Task SetLightOutputMode(SonyCledisLightOutputMode mode)
+        => mode switch {
+            SonyCledisLightOutputMode.Low => LogRequest(() => SendCommandAsync("light_output_mode \"low\""), mode),
+            SonyCledisLightOutputMode.Mid => LogRequest(() => SendCommandAsync("light_output_mode \"mid\""), mode),
+            SonyCledisLightOutputMode.High => LogRequest(() => SendCommandAsync("light_output_mode \"high\""), mode),
+            SonyCledisLightOutputMode.Full => LogRequest(() => SendCommandAsync("light_output_mode \"full\""), mode),
+            _ => throw new ArgumentException("invalid value", nameof(mode))
+        };
+
     public override Task<int> GetHorizontalPictureShiftAsync(SonyCledisInput input)
         => LogRequestResponse(async () => ConvertResponse<int>(await SendAsync($"pic_shift_h_ch --{GetInputName(input)} ?")));
 
