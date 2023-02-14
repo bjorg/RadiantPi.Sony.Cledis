@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>RadiantPi.Sony.Cledis</PackageId>
-    <Version>2.5</Version>
+    <Version>2.6</Version>
     <Title>RadiantPi Sony C-LED (Cledis) Client Library</Title>
     <Description>Communication client for Sony C-LED (Cledis)</Description>
     <Copyright>Copyright (C) 2020-2022</Copyright>

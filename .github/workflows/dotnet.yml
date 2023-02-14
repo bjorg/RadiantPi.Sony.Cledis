@@ -18,22 +18,20 @@ jobs:
           dotnet-version: 6.0.x
 
       # Build RadiantPi.Sony.Cledis
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj
       - name: Build
-        run: dotnet build --no-restore Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj
+        run: dotnet build --no-restore --configuration Release Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj
+      - name: Pack
+        run: dotnet pack --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -o . Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj
 
       # Build Samples
       - name: Build Show Module Temperatures Sample
         run: dotnet build Samples/ShowModuleTemperatures/ShowModuleTemperatures.csproj
-
       - name: Build Show Status
         run: dotnet build Samples/ShowStatus/ShowStatus.csproj
 
       # Publish RadiantPi.Sony.Cledis
       - name: Publish
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: brandedoutcast/publish-nuget@v2.5.5
-        with:
-            PROJECT_FILE_PATH: Source/RadiantPi.Sony.Cledis/RadiantPi.Sony.Cledis.csproj
-            NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate

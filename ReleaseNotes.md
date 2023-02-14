@@ -1,5 +1,9 @@
 # Release Notes
 
+## v2.6 (TBD)
+
+> LOGO
+
 
 ## v2.5 (2022-05-04)
 
