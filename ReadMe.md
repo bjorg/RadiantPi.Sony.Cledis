@@ -67,4 +67,4 @@ AnsiConsole.Write(table);
 
 This application is distributed under the GNU Affero General Public License v3.0 or later.
 
-Copyright (C) 2020-2022 - Steve G. Bjorg
+Copyright (C) 2020-2023 - Steve G. Bjorg
